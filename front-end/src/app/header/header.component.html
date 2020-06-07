@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-light justify-content-start">
+  <a class="navbar-brand" routerLink="">MovieApp</a>
+  <ul class="navbar-nav d-flex flex-row justify-content-start">
+    <li class="nav-item mx-1">
+      <a
+        class="nav-link p-2 rounded"
+        [routerLinkActive]="'active'"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLink=""
+      >
+        Home
+      </a>
+    </li>
+    <li class="nav-item mx-1">
+      <a
+        class="nav-link p-2 rounded"
+        [routerLinkActive]="'active'"
+        routerLink="/create"
+        >AddMovie</a
+      >
+    </li>
+    <li class="nav-item mx-1">
+      <a class="nav-link p-2 rounded" href="#">HiglyRatedMovies</a>
+    </li>
+    <li class="nav-item mr">
+      <!-- <a class="nav-link" routerLink="/settings"
+        ><i class="fa fa-icon"> </i>IconSettings</a
+      > -->
+
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn" id="dropdownBasic1" ngbDropdownToggle>
+          Get Started
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem routerLink="settings/signIn">SignIn</button>
+          <button ngbDropdownItem routerLink="settings/signUp">SignUp</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</nav>
