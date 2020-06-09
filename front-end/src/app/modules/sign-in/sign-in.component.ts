@@ -10,6 +10,7 @@ import { AuthenticationService } from 'src/app/signingService/authenitcation.ser
   styleUrls: ['./sign-in.component.css'],
 })
 export class SignInComponent implements OnInit {
+  passwordType = 'password';
   genders = [
     { label: 'Male', value: 'male' },
     { label: 'FeMale', value: 'female' },

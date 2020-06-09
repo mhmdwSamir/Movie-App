@@ -5,16 +5,22 @@
       <form [formGroup]="form" (ngSubmit)="onSignInSubmit()">
         <app-input
           [control]="form.get('username')"
-          label="User Name"
-          placeholder=" Your Name"
+          label="Email"
+          placeholder=""
           type="text"
         ></app-input>
         <app-input
           [control]="form.get('password')"
           label="Password"
-          placeholder=" Your Name"
-          type="password"
+          placeholder=""
+          type="{{passwordType}}"
         ></app-input>
+        <div class="mb-2">
+          <button type="button" class="btn btn-info"
+          (click)="passwordType == 'password' ? passwordType = 'text' : passwordType = 'password'">
+            show Passsword
+          </button>
+        </div>
         <!-- <div class="d-flex">
            <div class="form-group">
             <label class="label mr-2">Male</label>

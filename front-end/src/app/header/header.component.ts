@@ -8,9 +8,12 @@ import { AuthenticationService } from '../signingService/authenitcation.service'
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated: boolean;
+  isAuthorized: boolean;
   constructor(private _authenticationService: AuthenticationService) {
     this._authenticationService.isAuthenticated()
     .subscribe((authenticated) => this.isAuthenticated = authenticated);
+    this._authenticationService.isAuthorized()
+    .subscribe((isAuthorized) => this.isAuthorized = isAuthorized);
   }
 
   ngOnInit(): void {

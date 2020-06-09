@@ -2,9 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-export interface IUserAuthentication {
+class User {
   username: string;
-  isAdmin: boolean;
+  isAdmin?: boolean;
+  id : string;
+  displayName?: string;
+  email: string;
+}
+export interface IUserAuthentication {
+  user: User;
+  token: string;
 }
 export interface userCredentials {
   username: string;
@@ -17,29 +24,25 @@ export interface userCredentials {
 })
 export class AuthenticationService {
   currentUser = JSON.parse(localStorage.getItem('user')) as IUserAuthentication;
-  private _currentUser$ = new BehaviorSubject<boolean>(!!this.currentUser);
-  private _isAdmin$ = new BehaviorSubject<boolean>(this.currentUser ? this.currentUser.isAdmin : false);
+  private _currentUser$ = new BehaviorSubject<boolean>(!!(this.currentUser && this.currentUser.token));
+  private _isAdmin$ = new BehaviorSubject<boolean>(this.currentUser ? this.currentUser.user.isAdmin : false);
 
   rootUrl = `http://localhost:3000/api/auth`;
   constructor(private _http: HttpClient) { }
-  createUser(userData: userCredentials) {
-    return this._http.post(`${this.rootUrl}/signUp`, userData);
+  signUp(userData: userCredentials) {
+    return this._http.post<IUserAuthentication>(`${this.rootUrl}/signUp`, userData)
+    .pipe(
+      tap((resp) => resp.token ? this._currentUser$.next(true) : this._currentUser$.next(false)),
+      tap((resp) => resp.user.isAdmin ? this._isAdmin$.next(true) : this._isAdmin$.next(false))
+    );
   }
   
   login(username: string, password: string): Observable<IUserAuthentication> {
-    if (password == 'admin' && username == 'admin') {
-      this._currentUser$.next(true)
-      this._isAdmin$.next(true)
-      return of({ username, isAdmin: true })
-    } else if (password == 'P@ssw0rd' && username == 'mohammed') {
-      this._currentUser$.next(true)
-      this._isAdmin$.next(false)
-      return of({ username, isAdmin: false })
-    } else {
-      this._currentUser$.next(false)
-      this._isAdmin$.next(false)
-      return throwError({ error: 'unauthorized' })
-    }
+   return this._http.post<IUserAuthentication>(`${this.rootUrl}/signin`, { email: username, password })
+   .pipe(
+     tap((resp) => resp.token && this._currentUser$.next(true)),
+     tap((resp) => resp.user.isAdmin && this._isAdmin$.next(true))
+   )
   }
 
   isAuthenticated(): Observable<boolean> {
@@ -51,6 +54,19 @@ export class AuthenticationService {
   }
 
   setAuthenticationState(state: boolean) {
+    if (state == false) {
+      localStorage.removeItem('user')
+    }
     this._currentUser$.next(state);
+  }
+
+  getToken(): string {
+    const localStorageItem = localStorage.getItem('user');
+    if (localStorageItem) {
+      const authUser = JSON.parse(localStorageItem) as IUserAuthentication;
+      return authUser.token || '';
+    } else {
+      return '';
+    }
   }
 }

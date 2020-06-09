@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
   },
   displayName: {
     type: String,
-    required: true,
   },
 });
 const User = new mongoose.model("User", userSchema);

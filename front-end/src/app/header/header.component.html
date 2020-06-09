@@ -9,7 +9,7 @@
           Home
         </a>
       </li>
-      <li class="nav-item mx-1" *ngIf="isAuthenticated">
+      <li class="nav-item mx-1" *ngIf="isAuthenticated && isAuthorized">
         <a class="nav-link p-2 rounded"
           [routerLinkActive]="'active'"
           routerLink="/create">
@@ -20,18 +20,7 @@
         <a class="nav-link p-2 rounded" href="#">HiglyRatedMovies</a>
       </li> -->
 
-      <li class="nav-item mr d-flex align-items-center">
-
-        <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>
-            Get Started
-          </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <button ngbDropdownItem routerLink="settings/signIn">SignIn</button>
-            <button ngbDropdownItem routerLink="settings/signUp">SignUp</button>
-          </div>
-        </div>
-      </li>
+      
 
 
     </ul>
@@ -39,6 +28,18 @@
       <button type="button" class="btn btn-dark p-2 rounded" (click)="logOut()">
         logout
       </button>
+    </div>
+    <div class="d-flex align-items-center" *ngIf="!isAuthenticated">
+
+      <div ngbDropdown class="d-inline-block" display="dynamic">
+        <button class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>
+          Get Started
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem routerLink="settings/signIn">SignIn</button>
+          <button ngbDropdownItem routerLink="settings/signUp">SignUp</button>
+        </div>
+      </div>
     </div>
   </div>
 </nav>

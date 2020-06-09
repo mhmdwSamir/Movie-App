@@ -6,15 +6,17 @@ import { of } from 'rxjs';
 import { User } from '../models/authentication';
 
 @Injectable({ providedIn: 'root' })
-export class UniqueUserName implements AsyncValidator {
+export class UniqueEmail implements AsyncValidator {
+  rootUrl = 'http://localhost:3000/api/user/find-user'
   validate = (control: AbstractControl) => {
     // if UserName is Unique return Null
-    const username = control.value;
+    const email = control.value;
 
-    return this._http.get<User[]>('assets/users.db.json').pipe(
-      map((users) => {
-        if (users.find((u) => u.username == username)) {
-          return { NonUniqueUserName: true };
+    return this._http.get<User[]>(this.rootUrl, { params: { email }})
+    .pipe(
+      map((user) => {
+        if (user) {
+          return { existingEmail: true };
         } else {
           return null;
         }
