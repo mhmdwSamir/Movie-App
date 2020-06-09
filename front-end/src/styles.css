@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-* {
-  font-family: caviar dreams;
-}
+@import 'assets/fonts/fonts.css';
+
 
 body {
   position: relative;
+  font-family: 'Open Sans';
 }
 
 .overflow-hidden {
