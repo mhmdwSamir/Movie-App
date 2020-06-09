@@ -11,7 +11,7 @@
         Home
       </a>
     </li>
-    <li class="nav-item mx-1">
+    <li class="nav-item mx-1" *ngIf="isAuthenticated">
       <a
         class="nav-link p-2 rounded"
         [routerLinkActive]="'active'"
@@ -19,16 +19,14 @@
         >AddMovie</a
       >
     </li>
-    <li class="nav-item mx-1">
+    <!-- <li class="nav-item mx-1">
       <a class="nav-link p-2 rounded" href="#">HiglyRatedMovies</a>
-    </li>
-    <li class="nav-item mr">
-      <!-- <a class="nav-link" routerLink="/settings"
-        ><i class="fa fa-icon"> </i>IconSettings</a
-      > -->
+    </li> -->
+  
+    <li class="nav-item mr d-flex align-items-center">
 
       <div ngbDropdown class="d-inline-block">
-        <button class="btn" id="dropdownBasic1" ngbDropdownToggle>
+        <button class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>
           Get Started
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
