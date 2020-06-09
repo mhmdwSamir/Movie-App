@@ -48,15 +48,15 @@ export class SignInComponent implements OnInit {
       return;
     }
     const { username, password } = this.form.value;
-    this.authenticationService.login(username, password).subscribe(
-      (user) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        this.authenticationService.currentUser = user;
-        this.router.navigate(['']);
-      },
-      (err) => {
-        this.loginFialdError = 'Invalid username or password!!';
-      }
-    );
+    // this.authenticationService.login(username, password).subscribe(
+    //   (user) => {
+    //     localStorage.setItem('user', JSON.stringify(user));
+    //     this.authenticationService.currentUser = user;
+    //     this.router.navigate(['']);
+    //   },
+    //   (err) => {
+    //     this.loginFialdError = 'Invalid username or password!!';
+    //   }
+    //);
   }
 }

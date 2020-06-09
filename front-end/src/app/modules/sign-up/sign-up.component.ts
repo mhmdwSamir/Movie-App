@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatchPassword } from '../../@core/CustomValidator/match-password';
 import { UniqueUserName } from '../.././@core/CustomValidator/unique-user-name';
 import { from } from 'rxjs';
+import { SignService } from '../../signingService/sign.service';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -23,8 +24,8 @@ export class SignUpComponent implements OnInit {
           Validators.minLength(4),
           Validators.maxLength(15),
           Validators.pattern(/^[a-z]|[A-Z]/),
-        ],
-        [this._uniqueUserName.validate]
+        ]
+        //   [this._uniqueUserName.validate]
       ),
       password: new FormControl(null, [
         Validators.required,
@@ -43,12 +44,18 @@ export class SignUpComponent implements OnInit {
 
   constructor(
     private _matchPassword: MatchPassword,
-    private _uniqueUserName: UniqueUserName
+    private _uniqueUserName: UniqueUserName,
+    private _signService: SignService
   ) {}
   ngOnInit(): void {}
   OnSubmit() {
+    console.log('fdbalbasfvdfvndfvn');
+    console.log(this.signUpForm);
+
     if (this.signUpForm.valid) {
-      const { name, password } = this.signUpForm.value;
+      const { name, password, email, gender } = this.signUpForm.value;
+      console.log(this.signUpForm.value);
+      // this._signService.createUser()
     } else {
       this.signUpForm.markAllAsTouched();
       for (const key in this.signUpForm.controls) {
