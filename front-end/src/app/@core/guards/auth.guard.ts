@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from 'src/app/signingService/authenitcation.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +12,18 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this._activate()) {
-      return true;
-    } else {
-      this._router.navigate(['/access-denaied'])
-    };
+
+      return this._activate()
+      .pipe(
+        tap((isAuthenticated) => {
+          if (!isAuthenticated) {
+            this._router.navigate(['/access-denaied']);
+          }
+        })
+      )
   }
 
   private _activate() {
-    return this._userService.currentUser != undefined && this._userService.currentUser.username != undefined;
+    return this._userService.isAuthenticated();
   }
 }

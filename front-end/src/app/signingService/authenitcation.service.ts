@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, throwError, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 export interface IUserAuthentication {
   username: string;
   isAdmin: boolean;
@@ -15,25 +16,34 @@ export interface userCredentials {
   providedIn: 'root',
 })
 export class AuthenticationService {
+  
   currentUser = JSON.parse(localStorage.getItem('user')) as IUserAuthentication;
+  private _currentUser$ = new BehaviorSubject<boolean>(!!this.currentUser);
 
   rootUrl = `http://localhost:3000/api/auth`;
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient) { }
   createUser(userData: userCredentials) {
     return this._http.post(`${this.rootUrl}/signUp`, userData);
   }
   
   login(username: string, password: string): Observable<IUserAuthentication> {
     if (password == 'admin' && username == 'admin') {
-      return of({ username, isAdmin: true });
+      this._currentUser$.next(true)
+      return of({ username, isAdmin: true })
     } else if (password == 'P@ssw0rd' && username == 'mohammed') {
-      return of({ username, isAdmin: false });
+      this._currentUser$.next(true)
+      return of({ username, isAdmin: false })
     } else {
-      return throwError({ error: 'unauthorized' });
+      this._currentUser$.next(false)
+      return throwError({ error: 'unauthorized' })
     }
   }
 
-  isAuthenticated() {
-    return this.currentUser != undefined && this.currentUser.username != undefined
+  isAuthenticated(): Observable<boolean> {
+    return this._currentUser$
+  }
+
+  setAuthenticationState(state: boolean) {
+    this._currentUser$.next(state);
   }
 }

@@ -1,39 +1,44 @@
 <nav class="navbar navbar-expand-lg navbar-light justify-content-start">
   <a class="navbar-brand" routerLink="">MovieApp</a>
-  <ul class="navbar-nav d-flex flex-row justify-content-start">
-    <li class="nav-item mx-1">
-      <a
-        class="nav-link p-2 rounded"
-        [routerLinkActive]="'active'"
-        [routerLinkActiveOptions]="{ exact: true }"
-        routerLink=""
-      >
-        Home
-      </a>
-    </li>
-    <li class="nav-item mx-1" *ngIf="isAuthenticated">
-      <a
-        class="nav-link p-2 rounded"
-        [routerLinkActive]="'active'"
-        routerLink="/create"
-        >AddMovie</a
-      >
-    </li>
-    <!-- <li class="nav-item mx-1">
-      <a class="nav-link p-2 rounded" href="#">HiglyRatedMovies</a>
-    </li> -->
-  
-    <li class="nav-item mr d-flex align-items-center">
 
-      <div ngbDropdown class="d-inline-block">
-        <button class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>
-          Get Started
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem routerLink="settings/signIn">SignIn</button>
-          <button ngbDropdownItem routerLink="settings/signUp">SignUp</button>
+  <div class="d-flex align-items-center justify-content-between w-100">
+    <ul class="navbar-nav d-flex flex-row justify-content-start">
+      <li class="nav-item mx-1">
+        <a class="nav-link p-2 rounded" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }"
+          routerLink="">
+          Home
+        </a>
+      </li>
+      <li class="nav-item mx-1" *ngIf="isAuthenticated">
+        <a class="nav-link p-2 rounded"
+          [routerLinkActive]="'active'"
+          routerLink="/create">
+          Add Movie
+        </a>
+      </li>
+      <!-- <li class="nav-item mx-1">
+        <a class="nav-link p-2 rounded" href="#">HiglyRatedMovies</a>
+      </li> -->
+
+      <li class="nav-item mr d-flex align-items-center">
+
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>
+            Get Started
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem routerLink="settings/signIn">SignIn</button>
+            <button ngbDropdownItem routerLink="settings/signUp">SignUp</button>
+          </div>
         </div>
-      </div>
-    </li>
-  </ul>
+      </li>
+
+
+    </ul>
+    <div class="logout" *ngIf="isAuthenticated">
+      <button type="button" class="btn btn-dark p-2 rounded" (click)="logOut()">
+        logout
+      </button>
+    </div>
+  </div>
 </nav>
