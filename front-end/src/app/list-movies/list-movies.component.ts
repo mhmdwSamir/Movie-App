@@ -8,7 +8,7 @@ import {
 import { fromEvent } from 'rxjs';
 import { MovieSService } from '../MovieServices/movies.service';
 import { Movie } from '../@core/models';
-import { AuthenticationService } from '../signingService/sign.service';
+import { AuthenticationService } from '../signingService/authenitcation.service';
 
 @Component({
   selector: 'app-list-movies',

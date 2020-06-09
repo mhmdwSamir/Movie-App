@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
-import { AuthenticationService } from 'src/app/signingService/sign.service';
+import { AuthenticationService } from 'src/app/signingService/authenitcation.service';
 
 @Component({
   selector: 'app-sign-in',

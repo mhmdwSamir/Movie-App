@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatchPassword } from '../../@core/CustomValidator/match-password';
 import { UniqueUserName } from '../.././@core/CustomValidator/unique-user-name';
 import { from } from 'rxjs';
-import { AuthenticationService } from '../../signingService/sign.service';
+import { AuthenticationService } from '../../signingService/authenitcation.service';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
