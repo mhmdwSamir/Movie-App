@@ -16,9 +16,9 @@ export interface userCredentials {
   providedIn: 'root',
 })
 export class AuthenticationService {
-  
   currentUser = JSON.parse(localStorage.getItem('user')) as IUserAuthentication;
   private _currentUser$ = new BehaviorSubject<boolean>(!!this.currentUser);
+  private _isAdmin$ = new BehaviorSubject<boolean>(this.currentUser ? this.currentUser.isAdmin : false);
 
   rootUrl = `http://localhost:3000/api/auth`;
   constructor(private _http: HttpClient) { }
@@ -29,18 +29,25 @@ export class AuthenticationService {
   login(username: string, password: string): Observable<IUserAuthentication> {
     if (password == 'admin' && username == 'admin') {
       this._currentUser$.next(true)
+      this._isAdmin$.next(true)
       return of({ username, isAdmin: true })
     } else if (password == 'P@ssw0rd' && username == 'mohammed') {
       this._currentUser$.next(true)
+      this._isAdmin$.next(false)
       return of({ username, isAdmin: false })
     } else {
       this._currentUser$.next(false)
+      this._isAdmin$.next(false)
       return throwError({ error: 'unauthorized' })
     }
   }
 
   isAuthenticated(): Observable<boolean> {
     return this._currentUser$
+  }
+
+  isAuthorized() {
+    return this._isAdmin$;
   }
 
   setAuthenticationState(state: boolean) {
