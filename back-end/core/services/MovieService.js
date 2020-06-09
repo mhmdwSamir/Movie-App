@@ -36,6 +36,7 @@ module.exports = {
       throw exc;
     }
   },
+  
   getMovieById: async (id) => {
     if (!id)
       throw new Exception("Invalid id", HttpStatusCode.BadRequest, "BADIDxQ9w");
@@ -49,13 +50,12 @@ module.exports = {
     return movie;
   },
   createMovie: async (movie) => {
-    try {
-      let movie = new Movie(movie);
-      movie = await movie.save();
-      return movie;
-    } catch (error) {
-      throw error;
+    const existingMovie = await Movie.findOne({ name: movie.name });
+    if (existingMovie) {
+      throw new Exception("Existing movie", HttpStatusCode.Conflict, "A0332ls")
     }
+    let createdMovie = new Movie(movie);
+    return createdMovie.save();
   },
   updateMovie: async (id, movie) => {
     let movieToUpdate = await Movie.findById(id);
@@ -75,4 +75,11 @@ module.exports = {
     const updateResult = await movieToUpdate.save();
     return updateResult;
   },
-};
+  deleteMovie: async (id) => {
+    const movie = await Movie.findByIdAndRemove(id);
+    if (!movie) {
+      throw new Exception("The Movie with The Given Id Is not Found", HttpStatusCode.NotFound, "KLOO253");
+    }
+    return movie;
+  }
+}; 

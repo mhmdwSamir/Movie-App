@@ -1,4 +1,4 @@
-const { Movie, movieValidation } = require("../models/movies.model");
+const { movieValidation } = require("../models/movies.model");
 const movieService = require("../core/services/MovieService");
 const HttpStatusCode = require("./../helpers/http-status-code");
 const { Exception } = require("./../core/Exception/base-exception");
@@ -21,12 +21,10 @@ module.exports = {
   createMovie: async (req, res) => {
     const { error } = movieValidation(req.body);
     if (error) throw new Exception(error.details[0].message, 400, "BJDUW58");
-    const movie = await movieService.CreateNewmovie(req.body);
+    const movie = await movieService.createMovie(req.body);
     res.status(HttpStatusCode.Created).json(movie);
   },
   updateMovie: async (req, res) => {
-    // const { error } = movieValidation(req.body);
-    // if (error) throw new Exception(error.details[0].message, 400, "NJ85EFE");
     const updatedMovie = await movieService.updateMovie(
       req.params.id,
       req.body
@@ -34,26 +32,8 @@ module.exports = {
     res.send(updatedMovie);
   },
   deleteMovie: async (req, res) => {
-    const movie = await Movie.findByIdAndRemove(req.params.id);
-    if (!movie)
-      throw new Exception(
-        "The Movie with The Given Id Is not Found",
-        404,
-        "KLOO253"
-      );
-    res.send(movie);
-  },
-  deleteAllMovie: async (req, res) => {
-    const ids = req.body;
-    let movies = await Genre.find({ _id: { $in: ids } });
-    if (movies.length === 0) {
-      throw new Exception(
-        "it seems that Not Movies to delete",
-        HttpStatusCode.BadRequest,
-        "1199ccsq"
-      );
-    }
-    await Promise.all(movies.map((movie) => movie.remove()));
-    res.send(movies.map((movie) => movie.id));
-  },
+    const movieId = req.params.id;
+    const deletedMovie = await movieService.deleteMovie(movieId)
+    res.send(deletedMovie);
+  }
 };
