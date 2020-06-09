@@ -6,7 +6,7 @@ import { Movie } from '../@core/models';
   providedIn: 'root',
 })
 export class MovieSService {
-  Url = 'http://localhost:3000/api/genres/';
+  Url = 'http://localhost:3000/api/movies/';
   constructor(private _http: HttpClient) {}
   // fn load all movies
   ListMovies(
