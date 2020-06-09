@@ -14,7 +14,7 @@ export interface userCredentials {
 @Injectable({
   providedIn: 'root',
 })
-export class SignService {
+export class AuthenticationService {
   currentUser = JSON.parse(localStorage.getItem('user')) as IUserAuthentication;
 
   rootUrl = `http://localhost:3000/api/auth`;
@@ -31,5 +31,9 @@ export class SignService {
     } else {
       return throwError({ error: 'unauthorized' });
     }
+  }
+
+  isAuthenticated() {
+    return this.currentUser != undefined && this.currentUser.username != undefined
   }
 }

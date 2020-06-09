@@ -8,7 +8,7 @@ import {
 import { fromEvent } from 'rxjs';
 import { MovieSService } from '../MovieServices/movies.service';
 import { Movie } from '../@core/models';
-import { SignService } from '../signingService/sign.service';
+import { AuthenticationService } from '../signingService/sign.service';
 
 @Component({
   selector: 'app-list-movies',
@@ -35,7 +35,7 @@ export class ListMoviesComponent implements OnInit {
   movies: Movie[];
   constructor(
     private _movieService: MovieSService,
-    private authenticationService: SignService
+    private authenticationService: AuthenticationService
   ) {}
 
   ngOnInit(): void {

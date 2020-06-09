@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
-import { SignService } from 'src/app/signingService/sign.service';
+import { AuthenticationService } from 'src/app/signingService/sign.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -33,7 +33,7 @@ export class SignInComponent implements OnInit {
   loginFialdError: string;
   constructor(
     private router: Router,
-    private authenticationService: SignService
+    private authenticationService: AuthenticationService
   ) {}
 
   ngOnInit(): void {

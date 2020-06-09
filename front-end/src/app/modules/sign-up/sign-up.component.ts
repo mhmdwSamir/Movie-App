@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatchPassword } from '../../@core/CustomValidator/match-password';
 import { UniqueUserName } from '../.././@core/CustomValidator/unique-user-name';
 import { from } from 'rxjs';
-import { SignService } from '../../signingService/sign.service';
+import { AuthenticationService } from '../../signingService/sign.service';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -45,7 +45,7 @@ export class SignUpComponent implements OnInit {
   constructor(
     private _matchPassword: MatchPassword,
     private _uniqueUserName: UniqueUserName,
-    private _signService: SignService
+    private _signService: AuthenticationService
   ) {}
   ngOnInit(): void {}
   OnSubmit() {
