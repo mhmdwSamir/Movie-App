@@ -14,7 +14,7 @@ router.post("/", handleAsync(handlers.createMovie));
 router.put("/:id", handleAsync(handlers.updateMovie));
 // Delete an existing movie
 router.delete("/:id", handleAsync(handlers.deleteMovie));
-// Delete All
+// Delete All Movies
 router.delete("/", handleAsync(handlers.deleteAllMovie));
 
 module.exports = router;

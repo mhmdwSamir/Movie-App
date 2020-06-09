@@ -1,12 +1,12 @@
-const { Genre } = require("../../models/geners.model");
+const { Movie } = require("../../models/movies.model");
 const { Exception } = require("../Exception/base-exception");
 const HttpStatusCode = require("./../../helpers/http-status-code");
 module.exports = {
   /**
-   * @param {string} sortBy
-   * @param
-   * @param
-   * @param
+   * @param {string} sortBy  a feild to sort all movies througth
+   * @param {string} searchTerm  a word to search the movie
+   * @param {number} limit describe the number of movies in any page
+   * @param {number} pageNumber describe the the index of the page
    * @returns {Promise<{ movies: Movie[], count: number }>} Promise<{ movies: Movie[], count: number }>
    */
   getListMovies: async (
@@ -21,12 +21,12 @@ module.exports = {
         query.name = { $regex: new RegExp(searchTerm, "gi") };
       }
       var skipCount = pageNumber * limit;
-      const moviesPromise = Genre.find(query)
+      const moviesPromise = Movie.find(query)
         .sort(sortBy)
         .limit(limit)
-        .skip(skipCount); // 5
+        .skip(skipCount);
 
-      const moviesCountPromise = Genre.countDocuments(query); // 2
+      const moviesCountPromise = Movie.countDocuments(query);
       const [movies, moviesCount] = await Promise.all([
         moviesPromise,
         moviesCountPromise,
@@ -37,49 +37,42 @@ module.exports = {
     }
   },
   getMovieById: async (id) => {
+    if (!id)
+      throw new Exception("Invalid id", HttpStatusCode.BadRequest, "BADIDxQ9w");
+    let movie = await Movie.findById(id);
+    if (!movie)
+      throw new Exception(
+        "No MOVIE TO APPEAR",
+        HttpStatusCode.NotFound,
+        "gdgdf025"
+      );
+    return movie;
+  },
+  createMovie: async (movie) => {
     try {
-      if (!id)
-        throw new Exception(
-          "Invalid id",
-          HttpStatusCode.BadRequest,
-          "BADIDxQ9w"
-        );
-      const genre = await Genre.findById(id);
-      if (!genre)
-        throw new Exception(
-          "No MOVIE TO APPEAR",
-          HttpStatusCode.NotFound,
-          "gdgdf025"
-        );
-      return genre;
+      let movie = new Movie(movie);
+      movie = await movie.save();
+      return movie;
     } catch (error) {
       throw error;
     }
   },
-  CreateNewgenre: async (movie) => {
-    try {
-      let genre = new Genre(movie);
-      genre = await genre.save();
-      return genre;
-    } catch (error) {
-      throw error;
-    }
-  },
-  UpdateAgenre: async (id, movie) => {
-    const genre = await Genre.findById(id);
-    if (!genre)
+  updateMovie: async (id, movie) => {
+    let movieToUpdate = await Movie.findById(id);
+
+    if (!movieToUpdate)
       throw {
-        msg: " No Genre With the Given Id ",
+        msg: " No movie With the Given Id ",
         codeExeptions: "NFCS0H2",
       };
-    if (genre.name === movie.name)
+    if (movieToUpdate.name === movie.name)
       throw {
         msg: " it seems that No changes happend ",
         codeExeptions: "NFCS0H2",
       };
 
-    genre.set(movie);
-    const updateResult = await genre.save();
+    movieToUpdate.set(movie);
+    const updateResult = await movieToUpdate.save();
     return updateResult;
   },
 };
