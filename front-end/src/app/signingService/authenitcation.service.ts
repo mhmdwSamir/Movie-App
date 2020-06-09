@@ -27,7 +27,7 @@ export class AuthenticationService {
   private _currentUser$ = new BehaviorSubject<boolean>(!!(this.currentUser && this.currentUser.token));
   private _isAdmin$ = new BehaviorSubject<boolean>(this.currentUser ? this.currentUser.user.isAdmin : false);
 
-  rootUrl = `http://localhost:3000/api/auth`;
+  rootUrl = `https://movie-app-v1.herokuapp.com/api/auth`;
   constructor(private _http: HttpClient) { }
   signUp(userData: userCredentials) {
     return this._http.post<IUserAuthentication>(`${this.rootUrl}/signUp`, userData)
