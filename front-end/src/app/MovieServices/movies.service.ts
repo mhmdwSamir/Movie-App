@@ -15,7 +15,6 @@ export class MovieSService {
     limit?: number,
     pageNumber?: number
   ) {
-    // return this._http.get<Movie[]>(this.Url);
     let params = new HttpParams().append('sortBy', sortBy);
 
     if (limit) {

@@ -1,6 +1,7 @@
 <div class="container">
   <div class="row flex-end my-2">
-    <div class="col-md-4">
+    <!-- Search Input -->
+    <div class="col-md-4 mt-3">
       <div class="form-group">
         <input
           class="form-control"
@@ -10,15 +11,18 @@
         />
       </div>
     </div>
-    <div class="col-md-4">
+    <!-- Sort By Input -->
+    <div class="col-md-4 mt-3">
       <div class="form-group">
         <div class="d-flex align-items-center">
           <label
             for="sort-by-select-options"
             [ngStyle]="{ 'white-space': 'nowrap' }"
             class="label"
-            >Sort by:</label
           >
+            Sort by:
+          </label>
+
           <select
             placeholder="Select Movies By "
             class="form-control"
@@ -43,10 +47,20 @@
               (error)="movie.poster = defaultImage"
               class="card-img-top img-fluid"
             />
+            <div
+              class="card-content d-flex justify-content-center align-items-center"
+            >
+              <p class="text-center m-0 p-2">
+                {{ movie.name }}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div class="d-flex justify-content-between mb-4">
+        <div
+          class="d-flex justify-content-between mb-4"
+          *ngIf="isAdmin$ | async"
+        >
           <button
             class="IconRemove btn btn-danger"
             (click)="
@@ -65,6 +79,7 @@
     </ng-container>
   </div>
 </div>
+<!-- PopUp -->
 <app-pop-up
   (onclose)="togglleModalVisibilty()"
   *ngIf="showModal"

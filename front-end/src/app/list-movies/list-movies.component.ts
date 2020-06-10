@@ -5,10 +5,10 @@ import {
   debounceTime,
   distinctUntilChanged,
 } from 'rxjs/operators';
+import { AuthenticationService } from '../signingService/authenitcation.service';
 import { fromEvent } from 'rxjs';
 import { MovieSService } from '../MovieServices/movies.service';
 import { Movie } from '../@core/models';
-import { AuthenticationService } from '../signingService/authenitcation.service';
 
 @Component({
   selector: 'app-list-movies',
@@ -35,8 +35,10 @@ export class ListMoviesComponent implements OnInit {
   movies: Movie[];
   constructor(
     private _movieService: MovieSService,
-    private authenticationService: AuthenticationService
+    private _authenticationService: AuthenticationService
   ) {}
+  isAuthorized: boolean;
+  isAdmin$ = this._authenticationService.isAuthorized();
 
   ngOnInit(): void {
     this._movieService
@@ -66,29 +68,26 @@ export class ListMoviesComponent implements OnInit {
   }
   moveieIdToRemove;
   onRemoveMovie(movieId: string) {
-    //Add Modal Popup
-
     this.togglleModalVisibilty();
     if (confirm) {
       this._movieService.removeMovie(movieId).subscribe(
         (deletedMovie: Movie) => {
-          console.log(deletedMovie);
-          this.loadMovies(this.sortBy, this.searchTerm); // same behaviour when adding it (why )
+          this.loadMovies(this.sortBy, this.searchTerm);
         },
         (err) => {
-          console.error(err);
+          alert('Some Thing Went Wrong!!');
         }
       );
     }
   }
   loadMovies(sortBy: string, searchTerm: string) {
     this._movieService
-      .ListMovies(sortBy, searchTerm)
+      .ListMovies(sortBy, searchTerm, this.pageSize, this.pageNumber)
       .subscribe(({ movies, count }) => {
         this.movies = movies;
       }),
       (err) => {
-        console.error(err);
+        alert('Some thing Went Wrong ..!! ');
       };
   }
 
@@ -97,17 +96,16 @@ export class ListMoviesComponent implements OnInit {
     this.loadMovies(this.sortBy, this.searchTerm);
   }
   setSearchTerm(search: string) {
-    // callBack is the setSearchTerm function
     this.searchTerm = search;
     this.loadMovies(this.sortBy, this.searchTerm);
   }
 
   trimiming(text: string) {
     const res = text
-      .replace(/(^\s*)|(\s*$)/gi, '') // removes leading and trailing spaces
-      .replace(/[ ]{2,}/gi, ' ') // replaces multiple spaces with one space
-      .replace(/\n +/, '\n'); // Removes spaces after newlines
-    console.log(res);
+      .replace(/(^\s*)|(\s*$)/gi, '')
+      .replace(/[ ]{2,}/gi, ' ')
+      .replace(/\n +/, '\n');
+
     this.searchTerm = res;
     return;
   }
@@ -117,7 +115,6 @@ export class ListMoviesComponent implements OnInit {
       .ListMovies(this.sortBy, this.searchTerm, this.pageSize, this.pageNumber)
       .subscribe((val) => {
         this.movies = val.movies;
-        console.log(val);
       });
   }
 }

@@ -12,21 +12,18 @@ import { Router } from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
   genders = [
-    { label: 'MALE', value: 'male' },
-    { label: 'FEMALE', value: 'female' },
-    { label: 'OTHER', value: 'other' },
+    { label: 'male', value: 'male' },
+    { label: 'female', value: 'female' },
+    { label: 'other', value: 'other' },
   ];
   signUpForm = new FormGroup(
     {
-      name: new FormControl(
-        null,
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(15),
-          Validators.pattern(/^[a-z]|[A-Z]/),
-        ]
-      ),
+      name: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(15),
+        Validators.pattern(/^[a-z]|[A-Z]/),
+      ]),
       password: new FormControl(null, [
         Validators.required,
         Validators.minLength(5),
@@ -38,7 +35,11 @@ export class SignUpComponent implements OnInit {
         Validators.maxLength(15),
       ]),
       gender: new FormControl(null, [Validators.required]),
-      email: new FormControl(null, [Validators.email, Validators.required], [this._uniqueEmailValidator.validate])
+      email: new FormControl(
+        null,
+        [Validators.email, Validators.required],
+        [this._uniqueEmailValidator.validate]
+      ),
     },
     { validators: [this._matchPassword.validate] }
   );
@@ -51,21 +52,18 @@ export class SignUpComponent implements OnInit {
   ) {}
   ngOnInit(): void {}
   OnSubmit() {
-    console.log('fdbalbasfvdfvndfvn');
-    console.log(this.signUpForm);
-
+    //console.log(this.signUpForm);
     if (this.signUpForm.valid) {
       const { name: username, password, email, gender } = this.signUpForm.value;
 
-      this._signService.signUp({ email, password, username})
-      .subscribe(
-        (resp) => {
+      this._signService
+        .signUp({ email, password, username })
+        .subscribe((resp) => {
           const { token, user } = resp;
           localStorage.setItem('user', JSON.stringify({ user, token }));
           this._signService.setAuthenticationState(true);
-          this._router.navigate([''])
-        }
-      )
+          this._router.navigate(['']);
+        });
     } else {
       this.signUpForm.markAllAsTouched();
       for (const key in this.signUpForm.controls) {
@@ -73,8 +71,6 @@ export class SignUpComponent implements OnInit {
       }
       return;
     }
-
-    // One have User Data To Sign up
   }
   onClickReset() {
     this.signUpForm.reset();

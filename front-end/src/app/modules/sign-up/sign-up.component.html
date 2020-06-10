@@ -27,35 +27,37 @@
           placeholder=""
         ></app-input>
         <ng-container
-        *ngIf="
-          signUpForm.get('password').touched &&
-          signUpForm.get('ConfirmPassword').touched &&
-          signUpForm.errors
-        "
-      >
-        <p
-          [ngClass]="{
-            errorRedClass:
-              signUpForm.invalid && signUpForm.errors?.passwordDontMatch
-          }"
-          *ngIf="signUpForm.errors.passwordDontMatch"
+          *ngIf="
+            signUpForm.get('password').touched &&
+            signUpForm.get('ConfirmPassword').touched &&
+            signUpForm.errors
+          "
         >
-          Passwords Dont Match... Try Again
-        </p>
-      </ng-container>
-      
+          <p
+            [ngClass]="{
+              errorRedClass:
+                signUpForm.invalid && signUpForm.errors?.passwordDontMatch
+            }"
+            *ngIf="signUpForm.errors.passwordDontMatch"
+          >
+            Passwords Dont Match... Try Again
+          </p>
+        </ng-container>
+
         <app-input
           [control]="signUpForm.get('email')"
           label="Email"
           type="text"
           placeholder=""
         ></app-input>
-        <div class="alert-danger" *ngIf="signUpForm.get('email').errors?.existingEmail">
+        <div
+          class="alert-danger"
+          *ngIf="signUpForm.get('email').errors?.existingEmail"
+        >
           <p class="m-0">
             Email is exists.
           </p>
         </div>
-
 
         <div class="d-flex">
           <div class="form-group" *ngFor="let gender of genders; let i = index">
@@ -93,5 +95,3 @@
     <a routerLink="../signIn" class="lead"> SIGN IN</a>
   </div>
 </div>
-{{ signUpForm.errors }}
-{{ signUpForm.valid }}
