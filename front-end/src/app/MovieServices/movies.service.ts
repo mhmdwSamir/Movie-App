@@ -31,7 +31,6 @@ export class MovieSService {
       params,
     });
   }
-
   createMovie(movieName: Movie) {
     return this._http.post<Movie>(this.Url, movieName);
   }
