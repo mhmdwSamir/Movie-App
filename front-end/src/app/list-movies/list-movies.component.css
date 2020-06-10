@@ -1,0 +1,15 @@
+.posterImage:hover {
+  cursor: pointer;
+}
+.setting {
+  max-width: 300px;
+}
+.card-img-top {
+  width: 100%;
+  height: 35vw;
+  object-fit: cover;
+}
+
+.btn-light {
+  font-size: 25px;
+}
